@@ -6,7 +6,8 @@ export class Read extends React.Component{
     
 
     //client of our app
-    
+    //server listens for this method and url
+    //pass get method, it makes the call asynchoursly, promise will the be fulfilled, api comes back with response
     componentDidMount() {
         axios.get('http://localhost:4000/api/books')
         .then((response)=>{
