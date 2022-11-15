@@ -9,6 +9,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+
+//any domain can makea request
+
 const cors = require('cors');
 app.use(cors());
 app.use(function (req, res, next) {
@@ -19,29 +22,34 @@ app.use(function (req, res, next) {
   next();
 });
 
-
+//Trying to catch an error 
+//allowing us to connect to our database 
 const mongoose = require('mongoose');
 
 main().catch(err => console.log(err));
 
 async function main() {
+  //this is are connection string 
   await mongoose.connect('mongodb+srv://admin:admin@cluster0.edjpfsc.mongodb.net/?retryWrites=true&w=majority');
   
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 
+//schema gonna have 3 pieces off data, 3 strings, then we define the schema 
 const bookSchema = new mongoose.Schema({
   title: String,
   cover: String,
   author: String
 });
 
+//collection, represents are DB, then it defines the schema, then we generate the model 
 const bookModel = mongoose.model('books', bookSchema);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+//pulling data out of request, callback, then sending back data 
 app.post('/api/books',(req,res)=>{
   console.log(req.body);
   bookModel.create({
@@ -94,6 +102,9 @@ app.get('/api/books', (req, res) => {
   })
 
   })
+
+//always listening for request 
+//pulls out of DB, then excute the function as a call back function, then send back data to application
 
 app.get('/api/book/:id',(req,res)=>{
   console.log(req.params.id);
